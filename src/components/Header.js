@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useStateValue } from "../StateProvider";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
@@ -11,11 +11,14 @@ function Header() {
   const [state, dispatch] = useStateValue();
   const { basket, user } = state;
 
+  const navigate = useNavigate();
+
   const handleAuthentication = () => {
     if (user) {
       signOut(auth)
         .then(() => {
           console.log("user successfully logged out");
+          navigate("/");
         })
         .catch((error) => console.log(error));
     }
@@ -56,7 +59,7 @@ function Header() {
           <span className="header__optionLineTwo">Prime</span>
         </div>
 
-        <Link to="/checkout">
+        <Link to={user ? "/checkout" : "/login"}>
           <div className="header__optionBasket">
             <ShoppingBasketIcon />
             <span className="header__optionLineTwo header__basketCount">

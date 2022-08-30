@@ -1,12 +1,20 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useStateValue } from "../StateProvider";
 import "./Product.css";
 
 function Product({ id, title, image, price, rating }) {
   const [state, dispatch] = useStateValue();
+  const { user } = state;
+
+  const navigate = useNavigate();
 
   const addToBasket = () => {
     // dispatch the item into the data layer
+    if (!user) {
+      navigate("/login");
+      return;
+    }
     dispatch({
       type: "ADD_TO_BASKET",
       item: {

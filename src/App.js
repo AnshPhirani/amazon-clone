@@ -8,6 +8,13 @@ import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useStateValue } from "./StateProvider";
 import { useEffect } from "react";
+import Payment from "./components/Payment";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+const promise = loadStripe(
+  "pk_test_51LcCp5SD0OSbX94AK6prOFDEyMvGjA0uZhJ57cGV5c2Li4JjDzSKMg1twQ0FZJvAiNiD4Rb9ewAVojsEny667gKf00QBiXTp9O"
+);
 
 function App() {
   const [state, dispatch] = useStateValue();
@@ -28,6 +35,9 @@ function App() {
           type: "SET_USER",
           user: null,
         });
+        dispatch({
+          type: "EMPTY_BASKET",
+        });
       }
     });
   }, []);
@@ -42,6 +52,17 @@ function App() {
             element={
               <>
                 <Header /> <Checkout />
+              </>
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <>
+                <Header />
+                <Elements stripe={promise}>
+                  <Payment />
+                </Elements>
               </>
             }
           />

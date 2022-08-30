@@ -12,6 +12,10 @@
   background-color: white;
   z-index: 1;
 }
+.product:hover {
+  transition: all 0.4s ease-out;
+  transform: scale(1.02);
+}
 
 .product__rating {
   display: flex;
